@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-	<head>
-	<meta charset="UTF-8" />
+    <meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 	<!-- Judul yang lebih panjang dan deskriptif dengan kata kunci utama -->
@@ -340,34 +339,136 @@
 				background-position: -200% 0;
 			}
 		}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .pdf-viewer {
+            width: 100%;
+            height: 85vh; /* 85% dari tinggi viewport */
+            min-height: 500px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .pdf-viewer embed {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .fallback-message {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .download-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #45a049;
+        }
+        
+        @media (max-width: 768px) {
+            .pdf-viewer {
+                height: 75vh;
+                min-height: 400px;
+            }
+            
+            body {
+                padding: 10px;
+            }
 
-		 body {
-			margin: 0;
-			font-family: Arial, sans-serif;
+			.download-links a {
+				margin-bottom: 10px;
 			}
-			#pdf-container iframe {
-			width: 100%;
-			height: 100vh;
-			border: none;
-			}
-	</style>
+        }
+    </style>
 </head>
 <body>
-  <div id="pdf-container"></div>
+    <div class="container">
+        <div class="header">
+            <h1>Dokumen PDF</h1>
+            <p>Dokumen ditampilkan secara langsung di browser</p>
+        </div>
+        
+        <div class="pdf-viewer">
+            <!-- Ganti "dokumen.pdf" dengan nama file PDF Anda -->
+            <embed 
+                src="file.pdf#view=FitH&toolbar=1&navpanes=0"
+                type="application/pdf"
+                title="Dokumen PDF">
+        </div>
+        
+        <div class="download-links">
+            <a href="file.pdf" download class="btn">
+                ⬇ Download PDF
+            </a>
+            <a href="file.pdf" target="_blank" class="btn">
+                🔗 Buka di Tab Baru
+            </a>
+        </div>
+        
+        <div id="fallback" class="fallback-message">
+            <h3>⚠ Browser tidak mendukung preview PDF</h3>
+            <p>Silakan download atau buka di tab baru</p>
+        </div>
+    </div>
 
-  <script>
-    // Autoload setelah HTML selesai render
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('pdf-container').innerHTML = `
-          <iframe 
-            src="file.pdf" 
-            loading="lazy">
-          </iframe>
-        `;
-      }, 300); // delay kecil agar FCP aman
-    });
-  </script>
-
+    <script>
+        // Deteksi jika embed tidak bekerja setelah 2 detik
+        setTimeout(() => {
+            const embed = document.querySelector('embed');
+            const fallback = document.getElementById('fallback');
+            
+            // Jika embed tidak terlihat atau tinggi 0
+            if (!embed || embed.offsetHeight < 50) {
+                fallback.style.display = 'block';
+            }
+        }, 2000);
+    </script>
 </body>
 </html>
